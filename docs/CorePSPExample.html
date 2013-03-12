@@ -1,0 +1,401 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+    <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+    <TITLE>OpenSPML 2.0 Toolkit Examples - Some explanation</TITLE>
+    <META NAME="GENERATOR" CONTENT="StarOffice 8  (Solaris x86)">
+    <META NAME="CREATED" CONTENT="20061017;17543300">
+    <META NAME="CHANGED" CONTENT="20061020;13394100">
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P><BR><BR>
+</P>
+
+<H1 ALIGN=CENTER>The OpenSPML 2.0 CorePSP Example</H1>
+
+<H2 ALIGN=CENTER>Version 1.0</H2>
+
+<H2 ALIGN=CENTER>October, 2006</H2>
+
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<HR>
+<H2>Introduction</H2>
+
+<P>This documentation describes the CorePSP (PSP = Provisioning
+    Service Provider) example. The goal of this example is to outline how
+    one might approach implementing an SPML 2.0 provider or gateway. The
+    example provides a servlet, example executor, and test client &ndash;
+    that together show how to use the toolkit to implement a Provider and
+    Requestor (well, toy versions anyway.)</P>
+
+<P>The example can be found at:</P>
+
+<P>Binaries: <FONT FACE="Courier New, monospace">./lib/openspml2-examples.jar</FONT>
+</P>
+
+<P>Source: <FONT FACE="Courier New, monospace">./src/java</FONT> in
+    the subpackages of <FONT FACE="Courier New, monospace">org.openspml.v2.examples.nvpstore</FONT>.</P>
+
+<P>Web: <FONT FACE="Courier New, monospace">./web</FONT> which has
+    the example <FONT FACE="Courier New, monospace">web.xml</FONT> and
+    definitions of the .csv datastore (<FONT FACE="Courier New, monospace">contacts-osd.xml</FONT>)
+    used in the example.</P>
+
+<H2>Running the Example</H2>
+
+<P>This section will explain the example by doing. Of course, after
+    running it, you can review the javadoc and code. The principal class
+    to look at is the one the implements the core SPML capabilities,
+    <FONT FACE="Courier New, monospace">NVPObjectStoreExecutor</FONT> in
+    the <FONT FACE="Courier New, monospace">org.openspml.v2.examples.nvpstore.psp</FONT>
+    package.</P>
+
+<P><FONT FACE="Thorndale, serif">The PSP uses a few classes developed
+    for the example that provide a simple csvdb (aka NVPObjectStore where
+    NVP == NameValuePair). This store will keep its data in <FONT FACE="Courier New, monospace">.csv</FONT>
+    files. The default store-definition file is in
+    <FONT FACE="Courier New, monospace">./web/contacts-osd.xml</FONT>;
+    which defines a very simple contact database. There are two classes,
+    <FONT FACE="Courier New, monospace">emailInfo</FONT> and <FONT FACE="Courier New, monospace">phoneInfo</FONT>
+    correlated by a 'contactId' NVP/attribute. Since we are running this
+    example with '.' as the directory for the store, the files for this
+    store will be placed in a directory called <FONT FACE="Courier New, monospace">./contacts</FONT>
+    and will be <FONT FACE="Courier New, monospace">./contacts/emailInfo.csv</FONT>
+    and <FONT FACE="Courier New, monospace">./contacts/phoneInfo.csv.</FONT>
+    The store code base is pretty simple, but potentially useful for all
+    sorts of examples.</FONT></P>
+
+<P>The example can be run locally or remotely (hitting a server).</P>
+
+<P STYLE="margin-top: 0.17in; page-break-after: avoid"><FONT FACE="Albany, sans-serif"><FONT SIZE=4>Running
+    the example 'locally':</FONT></FONT></P>
+
+<P>Start in the root of the unbundled distribution.</P>
+<UL>
+    <LI>
+    <P><FONT FACE="Courier New, monospace"><FONT FACE="Thorndale, serif">On
+        Unix: </FONT></FONT>
+    </P>
+</UL>
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace">java
+    -classpath ./lib/openspml2-examples.jar:./lib/openspml2-toolkit.jar
+    org.openspml.v2.examples.nvpstore.client.TextBasedClient &ndash;-help</FONT></P>
+<UL>
+    <LI>
+    <P><A NAME="DDE_LINK1"></A><FONT FACE="Courier New, monospace"><FONT FACE="Thorndale, serif">On
+        Windows: </FONT></FONT>
+    </P>
+</UL>
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace">java
+    -classpath ./lib/openspml2-examples.jar;./lib/openspml2-toolkit.jar
+    org.openspml.v2.examples.nvpstore.client.TextBasedClient &ndash;-help</FONT></P>
+<UL>
+    <LI>
+    <P><FONT FACE="Thorndale, serif">Both will output the Usage for
+        the program.</FONT></P>
+</UL>
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>This
+    program will run a series of tests against an example server. It can
+    be run either against a server (just give a servlet URL) or run
+    locally.</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>Usage:</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>If
+    there are 0 args, we use a default URL of
+    http://localhost:8080/nvp/spml2 and go remote.</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>If
+    there is 1 arg, that arg is the URL and we go remote.</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>If
+    there are 2 args, the first is a schema file URL (could be on a
+    server) and the second is a filename for the baseDir to use for
+    storing csv files.</FONT></FONT></P>
+<UL>
+    <LI>
+    <P><FONT FACE="Courier New, monospace"><FONT FACE="Thorndale, serif">On
+        Unix: </FONT></FONT>
+    </P>
+</UL>
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace">java
+    -classpath ./lib/openspml2-examples.jar:./lib/openspml2-toolkit.jar
+    org.openspml.v2.examples.nvpstore.client.TextBasedClient
+    file:web/contacts-osd.xml .</FONT></P>
+<UL>
+    <LI>
+    <P><FONT FACE="Courier New, monospace"><FONT FACE="Thorndale, serif">On
+        Windows: </FONT></FONT>
+    </P>
+</UL>
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace">java
+    -classpath ./lib/openspml2-examples.jar;./lib/openspml2-toolkit.jar
+    org.openspml.v2.examples.nvpstore.client.TextBasedClient
+    file:web/contacts-osd.xml .</FONT></P>
+<UL>
+    <LI>
+    <P><FONT FACE="Thorndale, serif">These will output: a sequence
+        of xml request/reply pairs that you can browse to see that the
+        example is working. These are the marshalled SPML 2.0 requests. It
+        will begin with XML for the file (<FONT FACE="Courier New, monospace">./web/contacts-osd.xml</FONT>)
+        that defines the PSP/NVPObjectStore. This will be followed by the
+        results of the ListTargetsRequest.... and so on, as follows:</FONT></P>
+</UL>
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>xml
+    =</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;?xml
+    version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;osd:objectstoredef
+    xmlns:osd='urn:org:openspml:v2:examples:nvpstore:csvdb:def'</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in">
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2>storeName='contacts'
+        nameOfTypeNVP=&quot;objtype&quot; nameOfUidNVP=&quot;objid&quot;&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;osd:objectdef
+    classname='phoneInfo' nameOfIdNVP=&quot;contactId&quot;&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;osd:nvpdef
+    name='contactId' type='T' required='true'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;osd:nvpdef
+    name='firstName' type='T'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;osd:nvpdef
+    name='lastName' type='T'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;osd:nvpdef
+    name='phoneNumbers' type='MT'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;osd:nvpdef
+    name='phoneNumberTypes' type='MT'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;/osd:objectdef&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;osd:objectdef
+    classname='emailInfo' nameOfIdNVP=&quot;contactId&quot;&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;osd:nvpdef
+    name='contactId' type='T' required='true'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;osd:nvpdef
+    name='emailAddresses' type='MT'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;osd:nvpdef
+    name='emailAddressTypes' type='MT'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;/osd:objectdef&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>
+    &lt;/osd:objectstoredef&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><BR><BR>
+</P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;listTargetsRequest
+    xmlns='urn:oasis:names:tc:SPML:2:0' requestID='firstOne'
+    executionMode='synchronous'
+    profile='urn:oasis:names:tc:SPML:2:0:DSML'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><BR><BR>
+</P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;listTargetsResponse
+    xmlns='urn:oasis:names:tc:SPML:2:0' status='success'
+    requestID='firstOne'&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;target
+    targetID='contacts' profile='urn:oasis:names:tc:SPML:2:0:DSML'&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;schema&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:schema
+    xmlns:spmldsml='urn:oasis:names:tc:SPML:2:0:DSML'&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in">
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:objectClassDefinition
+        name='phoneInfo'&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:memberAttributes&gt;</FONT></FONT>
+</P>
+
+<P STYLE="margin-left: 0.79in">
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:attributeDefinitionReference
+        name='contactId'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in">
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:attributeDefinitionReference
+        name='firstName'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in">
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:attributeDefinitionReference
+        name='lastName'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in">
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:attributeDefinitionReference
+        name='phoneNumbers'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in">
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:attributeDefinitionReference
+        name='phoneNumberTypes'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>
+    &lt;/spmldsml:memberAttributes&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in">
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;/spmldsml:objectClassDefinition&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in">
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:objectClassDefinition
+        name='emailInfo'&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:memberAttributes&gt;</FONT></FONT>
+</P>
+
+<P STYLE="margin-left: 0.79in">
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:attributeDefinitionReference
+        name='contactId'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in">
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:attributeDefinitionReference
+        name='emailAddresses'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in">
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:attributeDefinitionReference
+        name='emailAddressTypes'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>
+    &lt;/spmldsml:memberAttributes&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in">
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;/spmldsml:objectClassDefinition&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:attributeDefinition
+    multivalued='false' name='contactId'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:attributeDefinition
+    multivalued='false' name='firstName'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:attributeDefinition
+    multivalued='false' name='lastName'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:attributeDefinition
+    multivalued='true' name='phoneNumbers'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:attributeDefinition
+    multivalued='true' name='phoneNumberTypes'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;spmldsml:attributeDefinition
+    multivalued='true' name='emailAddresses'/&gt;
+    &lt;spmldsml:attributeDefinition multivalued='true'
+    name='emailAddressTypes'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;/spmldsml:schema&gt;</FONT></FONT>
+</P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;supportedSchemaEntity
+    targetID='contacts' entityName='phoneInfo'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;supportedSchemaEntity
+    targetID='contacts' entityName='emailInfo'/&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;/schema&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>&lt;/target&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>
+    &lt;/listTargetsResponse&gt;</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>...</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Thorndale, serif"><FONT SIZE=3>Again,
+    this will create a directory, .<FONT FACE="Courier New, monospace">/contacts</FONT>,
+    that will contain the files containing the 'objects' in the
+    PSP/NVPObjectStore. The objects are stored in .csv file within this
+    directory.</FONT></FONT></P>
+
+<P STYLE="margin-left: 0.79in"><FONT FACE="Thorndale, serif"><B>Note:</B>
+    We generate the PSOIds with a timestamp followed by a Rand from a
+    fixed seed. This allows that example to be run multiple times
+    without needing the delete the existing files. That means you'll get
+    new objects in the store with each run; you can correlate them by the
+    value of the rand part of the PsoID, aka 'objid'. You can change
+    this behavior in the source and recompile. Eventually, the example
+    will be changed to not use a timestamp and then do different things
+    if there are pre-existing objects.</FONT></P>
+
+<P STYLE="margin-top: 0.17in; page-break-after: avoid"><FONT FACE="Albany, sans-serif"><FONT SIZE=4>Running
+    the example 'remotely':</FONT></FONT></P>
+
+<P>You need to deploy the example to a web container. At some point,
+    we'll deliver a .war, for now you will need to take the files in the
+    ./web directory and use them to deploy to a server. Don't forget to
+    place the .jar files in ./lib in the classpath of the server as well.</P>
+
+<P>If using the simplest tomcat installation and an unmodified
+    <FONT FACE="Courier New, monospace">web.xml </FONT>from
+    <FONT FACE="Courier New, monospace">./web/WEB-INF</FONT>; deploying
+    the .jar under the context 'nvp', the URL for the server would be
+    &ldquo;<A HREF="http://localhost:8080/nvp/spml2"><FONT
+        FACE="Courier New, monospace">http://localhost:8080/nvp/spml2</FONT></A>&rdquo;.
+    This is the default URL used in the client.</P>
+
+<P>Running:</P>
+<UL>
+    <LI>
+    <P><FONT FACE="Thorndale, serif"><FONT SIZE=3>On Unix:</FONT></FONT></P>
+</UL>
+<P STYLE="margin-left: 0.79in"><FONT FACE="Courier New, monospace"><FONT SIZE=3>java
+    -classpath ./lib/openspml2-examples.jar:./lib/openspml2-toolkit.jar
+    org.openspml.v2.examples.nvpstore.client.TextBasedClient </FONT></FONT>
+</P>
+<UL>
+    <LI>
+    <P><FONT FACE="Thorndale, serif"><FONT SIZE=3>On Windows:</FONT></FONT></P>
+</UL>
+<P STYLE="margin-left: 0.79in"><FONT SIZE=3><FONT FACE="Courier New, monospace">java
+    -classpath ./lib/openspml2-examples.jar;./lib/openspml2-toolkit.jar
+    org.openspml.v2.examples.nvpstore.client.TextBasedClient </FONT></FONT>
+</P>
+<UL>
+    <LI>
+    <P>These will execute the program against the server. The
+        'trace' output will go to a Swing-based monitoring window that will
+        open once the first request is seen. The sequence appearing in the
+        monitor will be the same (but with SOAP envelopes around the XML)
+        and keep in mind the monitor's output is from the perspective of the
+        server, so it &ldquo;receives&rdquo; requests and &ldquo;sends&rdquo;
+        responses.</P>
+</UL>
+<P><B>Note:</B> the default <FONT FACE="Courier New, monospace">web.xml
+</FONT>specifies the that the 'contacts' .csv datastore be stored in
+    <FONT FACE="Courier New, monospace">/tmp</FONT>. You will need to
+    create the directory if necessary; e.g. on non-Unix based systems.
+    You can change this in the web.xml... which might be a worthwhile
+    exercise.</P>
+
+<H2>Example JSPs</H2>
+
+<P>You can also point your browser at
+    <A HREF="http://localhost:8080/nvp/listTargets.jsp"><FONT FACE="Courier New, monospace">http://localhost:8080/nvp/listTargets.jsp</FONT></A>
+    to run an example that shows how to put up a simple web-page that
+    shows the targets for your provider. You can find <FONT FACE="Courier New, monospace">listTargets.jsp</FONT>
+    in the <FONT FACE="Courier New, monospace">./web</FONT> directory.</P>
+
+<H2>Conclusion</H2>
+
+<P>As always, we'd love suggestions for new examples and features,
+    whatever they may be. You can email <A HREF="mailto:toolkit-discuss@openspml.org">toolkit-discuss@openspml.org</A>
+    for help with questions and with requests.</P>
+
+<P><BR><BR>
+</P>
+
+<P><BR><BR>
+</P>
+<HR>
+<i>Copyright &#169; Sun Microsystems, Inc. All Rights Reserved.</i></BODY>
+</HTML>

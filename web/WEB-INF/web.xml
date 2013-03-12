@@ -1,0 +1,91 @@
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+    <!-- General description of your web application -->
+    <description>
+        Enables SPML 2.0, using an example PSP.
+    </description>
+
+    <!-- Servlet definitions for the servlets that make up
+         your web application, including initialization
+         parameters.  With Tomcat, you can also send requests
+         to servlets not listed here with a request like this:
+
+           http://localhost:8080/{context-path}/servlet/{classname}
+
+         but this usage is not guaranteed to be portable.  It also
+         makes relative references to images and other resources
+         required by your servlet more complicated, so defining
+         all of your servlets (and defining a mapping to them with
+         a <servlet-mapping> element) is recommended.
+
+         Servlet initialization parameters can be retrieved in a
+         servlet or JSP page by calling:
+
+             String value =
+               getServletConfig().getInitParameter("name");
+
+         where "name" matches the <param-name> element of
+         one of these initialization parameters.
+
+         You can define any number of servlets, including zero.
+    -->
+
+    <servlet>
+        <servlet-name>nvpstoreRouter</servlet-name>
+        <display-name>Example OpenSPML SOAP Router for NVPObjectStore</display-name>
+        <description>A router of RPC traffic - nominally SPML 2.0 over SOAP</description>
+        <servlet-class>
+            org.openspml.v2.transport.RPCRouterServlet
+        </servlet-class>
+        <init-param>
+            <param-name>dispatchers</param-name>
+            <param-value>org.openspml.v2.transport.SPMLViaSoapDispatcher</param-value>
+        </init-param>
+        <init-param>
+            <param-name>trace</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>monitor</param-name>
+            <param-value>org.openspml.v2.util.SwingRPCRouterMonitor</param-value>
+        </init-param>
+        <init-param>
+            <param-name>SpmlViaSoap.spmlMarshallers</param-name>
+            <param-value>org.openspml.v2.util.SimpleSPMLMarshaller</param-value>
+        </init-param>
+        <init-param>
+            <param-name>SpmlViaSoap.spmlMarshallers.SimpleSPMLMarshaller.trace</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>SpmlViaSoap.spmlExecutors</param-name>
+            <param-value>org.openspml.v2.examples.nvpstore.psp.NVPObjectStoreExecutor</param-value>
+        </init-param>
+        <init-param>
+            <param-name>SpmlViaSoap.spmlExecutors.nvpose.schemaFileURL</param-name>
+            <param-value>http://localhost:8080/nvp/contacts-osd.xml</param-value>
+        </init-param>
+        <init-param>
+            <param-name>SpmlViaSoap.spmlExecutors.nvpose.baseDir</param-name>
+            <param-value>/tmp</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>nvpstoreRouter</servlet-name>
+        <url-pattern>/spml2</url-pattern>
+    </servlet-mapping>
+
+    <!-- Define the default session timeout for your application,
+         in minutes.  From a servlet or JSP page, you can modify
+         the timeout for a particular session dynamically by using
+         HttpSession.getMaxInactiveInterval(). -->
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+        <!-- 30 minutes -->
+    </session-config>
+
+</web-app>

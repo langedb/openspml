@@ -1,0 +1,241 @@
+This is a brief overview of the DSML 2.0 Profile support.
+
+The following are excerpted from the DSML 2.0 .xsd - these are the parts of
+DSMLv2 that are relevant to SPMLv2's DSML Profile.
+
+    <!-- **** DSML Value **** -->
+    <xsd:simpleType name="DsmlValue">
+        <xsd:union memberTypes="xsd:string xsd:base64Binary xsd:anyURI"/>
+    </xsd:simpleType>
+
+    <!-- ***** AttributeDescriptionValue ***** -->
+    <xsd:simpleType name="AttributeDescriptionValue">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="((([0-2](\.[0-9]+)+)|([a-zA-Z]+([a-zA-Z0-9]|[-])*))(;([a-zA-Z0-9]|[-])+)*)"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="DsmlAttr">
+        <xsd:sequence>
+            <xsd:element name="value" type="DsmlValue" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="AttributeDescriptionValue" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="DsmlModification">
+        <xsd:sequence>
+            <xsd:element name="value" type="DsmlValue" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="AttributeDescriptionValue" use="required"/>
+        <xsd:attribute name="operation" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="add"/>
+                    <xsd:enumeration value="delete"/>
+                    <xsd:enumeration value="replace"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:complexType>
+
+    <!-- **** DSML Filter **** -->
+    <xsd:complexType name="Filter">
+        <xsd:group ref="FilterGroup"/>
+    </xsd:complexType>
+
+    <xsd:group name="FilterGroup">
+        <xsd:sequence>
+            <xsd:choice>
+                <xsd:element name="and" type="FilterSet"/>
+                <xsd:element name="or" type="FilterSet"/>
+                <xsd:element name="not" type="Filter"/>
+                <xsd:element name="equalityMatch" type="AttributeValueAssertion"/>
+                <xsd:element name="substrings" type="SubstringFilter"/>
+                <xsd:element name="greaterOrEqual" type="AttributeValueAssertion"/>
+                <xsd:element name="lessOrEqual" type="AttributeValueAssertion"/>
+                <xsd:element name="present" type="AttributeDescription"/>
+                <xsd:element name="approxMatch" type="AttributeValueAssertion"/>
+                <xsd:element name="extensibleMatch" type="MatchingRuleAssertion"/>
+            </xsd:choice>
+        </xsd:sequence>
+    </xsd:group>
+
+    <xsd:complexType name="FilterSet">
+        <xsd:sequence>
+            <xsd:group ref="FilterGroup" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="AttributeValueAssertion">
+        <xsd:sequence>
+            <xsd:element name="value" type="DsmlValue"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="AttributeDescriptionValue" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="AttributeDescription">
+        <xsd:attribute name="name" type="AttributeDescriptionValue" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="SubstringFilter">
+        <xsd:sequence>
+            <xsd:element name="initial" type="DsmlValue" minOccurs="0"/>
+            <xsd:element name="any" type="DsmlValue" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="final" type="DsmlValue" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="AttributeDescriptionValue" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="MatchingRuleAssertion">
+        <xsd:sequence>
+            <xsd:element name="value" type="DsmlValue"/>
+        </xsd:sequence>
+        <xsd:attribute name="dnAttributes" type="xsd:boolean" use="optional" default="false"/>
+        <xsd:attribute name="matchingRule" type="xsd:string" use="optional"/>
+        <xsd:attribute name="name" type="AttributeDescriptionValue" use="optional"/>
+    </xsd:complexType>
+
+    <!-- This is from the Search portion - the profile says these are used to filter attributes -->
+    <xsd:complexType name="AttributeDescriptions">
+        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="attribute" type="AttributeDescription"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+Each of those are implememented as a POJO in the Profile support.
+
+Here's the general structure:
+
+Filter (top-level to go into search request)
+Attributes (also top-level)
+
+and Filter is a container of itself, plus:
+
+(We call these FilterItems)
+
+And  (Holds FilterItems)
+Or    ""
+Not   ""
+EqualityMatch
+Substrings (of type SubstringFilter)
+GreaterOrEqual
+LessOrEqual
+Present
+ApproxMatch
+ExtensibleMatch (of type MatchingRuleAssertion)
+
+Example XML is:
+
+    <urn:filter>
+      <!--You have a CHOICE of the next 10 items at this level-->
+      <urn:and>
+        <!--You have a CHOICE of the next 10 items at this level-->
+        <urn:and/>
+        <urn:or/>
+        <urn:not/>
+        <urn:equalityMatch name="string">
+          <urn:value>c29ub3Jhcw==</urn:value>
+        </urn:equalityMatch>
+        <urn:substrings name="string">
+          <!--Optional:-->
+          <urn:initial>http://www.any.com/verrantque/temperat</urn:initial>
+          <!--Zero or more repetitions:-->
+          <urn:any>dHVyYmluZQ==</urn:any>
+          <!--Optional:-->
+          <urn:final>cmVnZW1xdWU=</urn:final>
+        </urn:substrings>
+        <urn:greaterOrEqual name="string">
+          <urn:value>string</urn:value>
+        </urn:greaterOrEqual>
+        <urn:lessOrEqual name="string">
+          <urn:value>string</urn:value>
+        </urn:lessOrEqual>
+        <urn:present name="string"/>
+        <urn:approxMatch name="string">
+          <urn:value>ZmVyYW50</urn:value>
+        </urn:approxMatch>
+        <urn:extensibleMatch dnAttributes="false" matchingRule="string" name="string">
+          <urn:value>string</urn:value>
+        </urn:extensibleMatch>
+      </urn:and>
+      <urn:or>
+        <!--You have a CHOICE of the next 10 items at this level-->
+        <urn:and/>
+        <urn:or/>
+        <urn:not/>
+        <urn:equalityMatch name="string">
+          <urn:value>string</urn:value>
+        </urn:equalityMatch>
+        <urn:substrings name="string">
+          <!--Optional:-->
+          <urn:initial>http://www.my.edu/flammato/speluncis</urn:initial>
+          <!--Zero or more repetitions:-->
+          <urn:any>http://www.my.com/flammas/ac</urn:any>
+          <!--Optional:-->
+          <urn:final>http://www.test.org/caelumque/speluncis</urn:final>
+        </urn:substrings>
+        <urn:greaterOrEqual name="string">
+          <urn:value>http://www.sample.com/praeterea/arce</urn:value>
+        </urn:greaterOrEqual>
+        <urn:lessOrEqual name="string">
+          <urn:value>http://www.any.com/certo/quisquam</urn:value>
+        </urn:lessOrEqual>
+        <urn:present name="string"/>
+        <urn:approxMatch name="string">
+          <urn:value>string</urn:value>
+        </urn:approxMatch>
+        <urn:extensibleMatch dnAttributes="false" matchingRule="string" name="string">
+          <urn:value>string</urn:value>
+        </urn:extensibleMatch>
+      </urn:or>
+      <urn:not/>
+      <urn:equalityMatch name="string">
+        <urn:value>string</urn:value>
+      </urn:equalityMatch>
+      <urn:substrings name="string">
+        <!--Optional:-->
+        <urn:initial>string</urn:initial>
+        <!--Zero or more repetitions:-->
+        <urn:any>cGVjdG9yZQ==</urn:any>
+        <!--Optional:-->
+        <urn:final>cGVjdG9yZQ==</urn:final>
+      </urn:substrings>
+      <urn:greaterOrEqual name="string">
+        <urn:value>http://www.your.gov/certo/dare</urn:value>
+      </urn:greaterOrEqual>
+      <urn:lessOrEqual name="string">
+        <urn:value>YmVsbGE=</urn:value>
+      </urn:lessOrEqual>
+      <urn:present name="string"/>
+      <urn:approxMatch name="string">
+        <urn:value>http://www.your.com/magno/et</urn:value>
+      </urn:approxMatch>
+      <urn:extensibleMatch dnAttributes="false" matchingRule="string" name="string">
+        <urn:value>ZXQ=</urn:value>
+      </urn:extensibleMatch>
+    </urn:filter>
+    <!--Optional:-->
+    <urn:attributes>
+      <urn:attribute name="string"/>
+    </urn:attributes>
+
+There's generally a one-to-one correspondence of .xsd type and Java type.
+
+The Not class presented some challenges as it is both a FilterItem and a Filter.  We're not sure if
+it can appear at the top-level, so as of now, we don't allow that.  The code is structured to make
+this easy to support; which makes the code a tad ugly...
+
+ToDo:  find out if Not is indeed a Filter... in the sense that:
+
+<spml:searchRequest>
+  <spmlsearch:query>
+    <spml:basePsoID .../>
+    <dsml:not>
+      ...
+    </dsml:not>
+    <dsml:attributes>
+      ...
+    </dsml:attributes>
+  </spmlsearch:query>
+</spml:searchRequest>
+

@@ -1,0 +1,851 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>OpenSPML 2.0 Toolkit Overview</title>
+<style type="3D&quot;text/css&quot;">
+<!--
+div.constraint, div.issue, div.note, div.notice {
+    margin-left: 2em;
+}
+
+dt.label {
+    display: run-in;
+}
+
+li {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+}
+
+p {
+    margin-top: 0.6em;
+    margin-bottom: 0.6em;
+}
+
+.diff-chg
+
+=
+09
+{
+background-color: orange
+
+;
+}
+.diff-del
+
+=
+09
+{
+background-color: red
+
+;
+text-decoration: line-through
+
+;
+}
+.diff-add
+
+=
+09
+{
+background-color: lime
+
+;
+}
+table {
+    empty-cells: show;
+}
+
+div.exampleInner {
+    margin-left: 1em;
+    margin-top: 0em;
+    margin-bottom: 0em
+}
+
+div.exampleOuter {
+    border: 4px double gray;
+    margin: 0em;
+    padding: 0em
+}
+
+div.exampleInner {
+    background-color: #d5dee3;
+    border-top-width: 4px;
+    border-top-style: double;
+    border-top-color: #d3d3d3;
+    border-bottom-width: 4px;
+    border-bottom-style: double;
+    border-bottom-color: #d3d3d3;
+    padding: 4px;
+    margin: 0em
+}
+
+div.exampleWrapper {
+    margin: 4px
+}
+
+div.exampleHeader {
+    font-weight: bold;
+    margin: 4px
+}
+
+body {
+    padding: 2em 1em 2em 70px;
+    margin: 0;
+    font-family: sans-serif;
+    color: black;
+    background: white;
+    background-position: top left;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+:link {
+    color: #00C;
+    background: transparent
+}
+
+:visited {
+    color: #609;
+    background: transparent
+}
+
+a:active {
+    color: #C00;
+    background: transparent
+}
+
+a:link img, a:visited img {
+    border-style: none
+}
+
+/* no border on img links */
+a img {
+    color: white;
+}
+
+/* trick to hide the border in Netscape 4 */
+@media
+all
+{
+/* hide the next rule from Netscape 4 */
+a img {
+    color: inherit;
+}
+
+/* undo the color change above */
+}
+th, td {
+/* ns 4 */
+    font-family: sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-align: left
+}
+
+/* background should be transparent, but WebTV has a bug */
+h1, h2, h3 {
+    color: #005A9C;
+    background: white
+}
+
+h1 {
+    font: 170% sans-serif
+}
+
+h2 {
+    font: 140% sans-serif
+}
+
+h3 {
+    font: 120% sans-serif
+}
+
+h4 {
+    font: bold 100% sans-serif
+}
+
+h5 {
+    font: italic 100% sans-serif
+}
+
+h6 {
+    font: small-caps 100% sans-serif
+}
+
+.hide {
+    display: none
+}
+
+div.head {
+    margin-bottom: 1em
+}
+
+div.head h1 {
+    margin-top: 2em;
+    clear: both
+}
+
+div.head table {
+    margin-left: 2em;
+    margin-top: 2em
+}
+
+p.copyright {
+    font-size: small
+}
+
+p.copyright small {
+    font-size: small
+}
+
+@media
+screen
+{
+/* hide from IE3 */
+a[href]:hover {
+    background: #ffa
+}
+
+}
+dd {
+    margin-bottom: 0.3em
+}
+
+dt {
+    margin-top: 0;
+    margin-bottom: 0
+}
+
+/* opera 3.50 */
+dt {
+    font-weight: bold
+}
+
+pre, code {
+    font-family: monospace;
+    font-size: medium
+}
+
+ul.toc {
+    list-style: disc;
+= 09 = 09 /* Mac NS has problem with 'none' */
+list-style : none;
+}
+
+-->
+</style>
+</head>
+<body>
+<br>
+
+<h1>OpenSPML 2.0 Toolkit Overview</h1>
+
+<h2>Version 1.0 (of this doc)</h2>
+
+<h2>October, 2006</h2>
+
+<br>
+<hr>
+<h2>Contents</h2>
+<table>
+    <tbody>
+        <tr align="left">
+            <td>1</td>
+            <td>&nbsp;&nbsp;</td>
+            <td><a href="#Introduction">Introduction</a></td>
+        </tr>
+        <tr align="left">
+            <td>2</td>
+            <td>&nbsp;&nbsp;</td>
+            <td><a href="#Installation and Use">Installation and Use</a></td>
+        </tr>
+        <tr align="left">
+            <td>3</td>
+            <td>&nbsp;&nbsp;</td>
+            <td><a href="#Project Goals">Project Goals</a></td>
+        </tr>
+        <tr align="left">
+            <td>4</td>
+            <td>&nbsp;&nbsp;</td>
+            <td><a href="#Toolkit Layers and Packages">Toolkit Layers and Packages</a></td>
+        </tr>
+        <tr align="left">
+            <td>5</td>
+            <td>&nbsp;&nbsp;</td>
+            <td><a href="#Communication Classes">Communication Classes</a></td>
+        </tr>
+        <tr align="left">
+            <td>6</td>
+            <td>&nbsp;&nbsp;</td>
+            <td><a href="#Utility Classes">Utility Classes</a></td>
+        </tr>
+        <tr align="left">
+            <td>7</td>
+            <td>&nbsp;&nbsp;</td>
+            <td><a href="#Conclusion">Conclusion</a></td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<a name="Introduction"></a>
+
+<div class="div1">
+<h2><a name="Introduction">Introduction</a></h2>
+
+<p>This document provides an overview of the OpenSPML 2.0 Toolkit, a collection
+    of Java classes that assist in submitting OASIS SPML 2.0 (SPML2) requests and
+    receiving SPML2 responses. There are also classes in the toolkit that assist in
+    the implementation of servlet-based SPML2 servers.</p>
+
+<p>The toolkit is not vendor specific, it may be used by any Java application to
+    communicate with any SPML2 compliant server. Again, it may also be used by an
+    SPML2 server to parse requests and build responses.</p>
+
+<p>A Java object model is provided for all of the request and response elements
+    defined in the SPML2 protocol. This includes the core requests and all of the
+    standard capabilities. In addition, a (very simple) set of classes to perform
+    SOAP communication is also provided. This provides Java developers with a
+    convenient mechanism to make SPML2 requests without having to worry about the
+    details of the XML language, SOAP, or the HTTP transport protocol.</p>
+
+<p>This new version of the toolkit is designed to be pluggable, in part to make
+    supporting the "profiles" of SPML 2.0 simpler; but to also allows you to plug-in
+    different SOAP providers, different XML parsers, and you should be able to use
+    different XML to Java binding tools (e.g. JAXB) to support the XML Schema
+    profile.</p>
+
+<p>This document provides only an overview of the available classes. Please
+    consult the Javadocs (in
+    <root>/docs/apis) for more detailed information.
+</p>
+
+<div class="div1">
+    <h2><a name="Installation And Use">Installation and Use</a></h2>
+</div>
+
+<p>Currently, the distribution includes the following jar files (in the
+    &lt;root&gt;>/lib directory): </p>
+
+<p><b>openspml2-toolkit.jar</b>: contains the class files for the OpenSPML 2.0
+    Toolkit.</p>
+
+<p>The jar file is normally installed in the WEB-INF/lib directory of your web
+    application. If you wish to use only the client portion of the library, you may
+    put openspml2-toolkit.jar anywhere and include it in the client application's
+    classpath.</p>
+
+<p>The library requires some other libraries, these are included in the
+    distribution in the tools directory. They should also be made available to
+    servers and clients. (You'll note that one of these in the openspml.jar from the
+    1.0 toolkit. We'll eventually remove this dependency.)</p>
+
+<p>Here's an example web.xml (just the pertinent parts) that uses a service
+    like 'dev/null' to handle requests. This should server as a starting point.</p>
+
+<pre>
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;openspmlRouter&lt;/servlet-name&gt;
+        &lt;display-name&gt;OpenSPML SOAP Router&lt;/display-name&gt;
+        &lt;description&gt;A router of RPC traffix - nominally SPML 2.0 over SOAP&lt;/description&gt;
+        &lt;servlet-class&gt;
+            org.openspml.v2.transport.RPCRouterServlet
+        &lt;/servlet-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;dispatchers&lt;/param-name&gt;
+            &lt;param-value&gt;org.openspml.v2.transport.SPMLViaSoapDispatcher&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;trace&lt;/param-name&gt;
+            &lt;param-value&gt;true&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;monitor&lt;/param-name&gt;
+            &lt;param-value&gt;org.openspml.v2.util.SwingRPCRouterMonitor&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;SpmlViaSoap.spmlMarshallers&lt;/param-name&gt;
+            &lt;param-value&gt;org.openspml.v2.util.SimpleSPMLMarshaller&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;SpmlViaSoap.spmlMarshallers.SimpleSPMLMarshaller.trace&lt;/param-name&gt;
+            &lt;param-value&gt;true&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;SpmlViaSoap.spmlExecutors&lt;/param-name&gt;
+            &lt;param-value&gt;org.openspml.v2.test.DeadEndExecutor&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/servlet&gt;
+
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;openspmlRouter&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/openspml2&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+</pre>
+
+
+<div class="div1">
+    <h2><a name="Project Goals">Project Goals</a></h2>
+</div>
+
+<p>Apart from supporting the new version of the protocol, we also had some other
+    goals.</p>
+
+<p>We wanted to carry forward the good things about the 1.0 toolkit, namely:
+
+    <ul>
+
+        <li>Separation between protocol and SPML handlers</li>
+
+        <li>Protocol handler registration via servlet properties</li>
+
+        <li>'Plug-in' and registration mechanism for provider-specific server
+            implementation via SPMLHandler interface
+        </li>
+
+    </ul>
+</p>
+
+<p>We wanted to make the toolkit more open - dropping some things; like:
+
+    <ul>
+
+        <li>relies on DOM - we now allow you readily replace the parser
+            implementation.
+        </li>
+
+        <li>too many things named handler - hopefully the naming is improved.</li>
+
+        <li>SOAP toolkit agnostic - a replaceable layer in the toolkit knows about SOAP.
+            You could readily use any SOAP toolkit you'd like.
+        </li>
+    </ul>
+</p>
+
+<p>We have added, or intend to add, the following items to the kit:
+
+    <ul>
+
+        <li>a comprehensive example of a provider/server</li>
+
+        <li>interoperability test suites, hitting live server(s)</li>
+
+        <li>if there's to be a standard schema, use it in the examples and suites</li>
+
+        <li>documentation, like javadoc, tutorials, and quick start guides.</li>
+
+        <li>perhaps some infrastructure like logging; or at least a coherent exception
+            handling model/strategy.
+        </li>
+    </ul>
+</p>
+
+<div class="div1">
+    <h2><a name="Toolkit Layers and Packages">Toolkit Layers and Packages</a></h2>
+</div>
+
+<p>The toolkit services are layered and the package names that mirror the
+    layers. Where appropriate they also mirror the specification.</p>
+
+<p>This section names the layers and the package(s) that represent those layers.
+    Generally, we are starting at the top of the layering and working down through
+    to the dependencies. In other words, the first package listed should only be
+    dependent on the next package listed.</p>
+
+<p>We provide a list of the interesting classes in each package (not alsways
+    complete), with short descriptions. The Javadoc is a more definitive set of
+    information.</p>
+
+<p>A note on class naming... there are a fair number of interfaces in the
+    toolkit. We often define "starter" classes that are meant to be used as a base
+    for the implementation of an interface. These classes are usually abstract and
+    are named Basic&lt;interfacename&gt;. So, if we have an interface named "Foo", the
+    "BasicFoo" class is the corresponding starter. This starter class may not be in
+    the same package as the interface. Additionally, we often preface classes with
+    "Simple"; which is meant to indicate that this is an example class that may not
+    be implemented robustly enough to use in a production server, but it should
+    communicate the basics of what the "real" implementation should look like.</p>
+
+<h3>Web Service Layer</h3>
+
+<p><i>(org.openspml.v2.transport)</i></p>
+
+<p>Here's where determine how communication will happen. We don't assume much
+    about the transport layer; while we do provide an example of using HttpServlet
+    and SOAP as the transport - it should be possible to implement different
+    transport protocols.</p>
+
+<p><i>RPCDispatcher</i></p>
+
+<p>Implement this interface in order to to implement an RPC API. We implement it
+    to support SPML2 via SOAP.</p>
+
+<pre>
+  public void init(RPCRouter router, Map config) throws Spml2TransportException;
+  public String dispatchRequest(String message) throws Spml2TransportException;
+</pre>
+
+<p><i>RPCRouter</i></p>
+
+<p>This is an interface that can be monitored, and implementation should
+    manage RPCDispatcher objects.</p>
+
+<p><i>RPCRouterMonitor</i></p>
+
+<p>An interface to allow the monitoring of the messages flowing through the
+    router.</p>
+
+<p><i>RPCRouterMonitorListener</i></p>
+
+<p>Monitors tell listeners when they close.</p>
+
+<p><i>RPCRouterServlet</i></p>
+
+<p>An implementation of the RPCRouter interface that is also an HttpServlet.
+    This also manages dispatchers, the default being one that knows how to take SOAP
+    to SPML2 and back.</p>
+
+<p><i>SPMLViaSOAPDispatcher</i></p>
+
+<p>Implements the RPCDispatcher interface. This adapts from the world of the
+    transport to the provider. Maintains a list of marshallers,and executors. The
+    marshallers convert the transport data to XML and back.</p>
+
+<H3>Provider Layer (SPML2 domain)</H3>
+
+<p><i>(org.openspml.v2.provider)</i></p>
+
+<p>This is where the provider implementation begins. The classes here receive
+    the data from the transport layer and manipulate it. For example, SPMLMarshaller
+    implementations move XML to Java and back.</p>
+
+<p><i>SPMLMarshaller</i></p>
+
+<p>An interface that receives Strings (SPML2) and returns SPMLRequest objects.
+    These can also convert Response objects back to Strings (SPML2).</p>
+
+<pre>
+  public void init(Map config) throws Spml2Exception;
+  public String getUniqueName();
+  public Request unmarshallRequest(String msg) throws Spml2Exception;
+  public String marshallResponse(Response res) throws Spml2Exception;
+</pre>
+
+<p><i>SPMLExecutor</i></p>
+
+<p>An interface that processes Java objects (Request/Response). Implementations
+    can redispatch them to other SPMLExecutor objects or could do the work directly.
+    One might define an SPMLExecutor that takes a request, introspects on it, and
+    calls a private method that implements the funtionality. Alternatively, one
+    might define an executor that looks at the request and dispatches to a
+    sub-executor that performs the operation. In the former case, the methods
+    implement the operations, in the latter, the sub-handlers implement the
+    operations.</p>
+
+<pre>
+  public Response execute(Request request) throws Spml2Exception;
+</pre>
+
+<H3>Open Content Support</H3>
+
+<p><i>(org.openspml.v2.msg)</i></p>
+
+<p>The SPML2 .xsds allow for <em>Open Content</em> in the object (i.e xsd:any
+    for elements and attributes). The toolkit therefore has to allow for Java
+    classes that represent this content. We do this by allowing clients of the
+    toolkit to implement the OpenContentAttr and OpenContentElement interfaces.
+    The latter is the more interesting.</p>
+
+<p>We also use the Adapter pattern; providing an interface called
+    OpenContentElementAdapter, and 2 default implementations that allow us to manage
+    objects of type Marshallable and String (raw xml) as OpenContent.</p>
+
+<p>Again, these implementations:
+    <ol>
+        <li>Manage objects implementing our Marshallable interface as OpenContent.
+            Marshallable implementations can be hooked into the toolkit classes to become
+            first-class citizens of the toolkit.
+        </li>
+
+        <li>Manage Strings of XML as OpenContent, allowing you to do your own
+            marshalling/unmarshalling.
+        </li>
+    </ol>
+</p>
+
+<p><b>NOTE:</b> The string adapter is only enabled if you set the
+    <b>"org.openspml.v2.adaptXMLStrings"</b> system property.</p>
+
+<p>The other classes of interest in this package are XMLMarshaller and
+    XMLUnmarshaller. These are the interfaces that we implement to actual bind XML
+    to Java objects and back. These are what you would implement to replace, for
+    example, our example classes that use Xerces DOM, with a different parser or
+    parser model.</p>
+
+<h3>Core, Capabilities and Profiles</h3>
+
+<p>(subpackages of <i>org.openspml.v2.msg and org.openspml.v2.profiles</i>)</p>
+
+<p>This section will discuss the contents of the subpackages of the .msg
+    package. These contain the Java classes that are specified in the .xsd files of
+    the standard distribution. Each package is named according to its prefix in
+    these .xsds.</p>
+
+<p>Since the key thing to know is where to find the classes, we won't list all
+    the classes in each package here. You can refer to the Javadoc for that.</p>
+
+<h4>Table of Core and Capabilities Packages</h4>
+
+<TABLE WIDTH=100% BORDER=1 CELLPADDING=4 CELLSPACING=3>
+    <COL WIDTH=103*>
+    <COL WIDTH=153*>
+    <TR VALIGN=TOP>
+        <TH WIDTH=40%>
+            <P>"Core and Capabilities" Packages</P>
+        </TH>
+        <TH WIDTH=60%>
+            <P>Description</P>
+        </TH>
+    </TR>
+    <TR VALIGN=TOP>
+        <TD WIDTH=40%>
+            <P>org.openspml.v2.msg.spml</P>
+        </TD>
+        <TD WIDTH=60%>
+            <P>This package holds the classes for the "core"
+                capability.</P>
+        </TD>
+    </TR>
+    <TR VALIGN=TOP>
+        <TD WIDTH=40%>
+            <P>org.openspml.v2.msg.pass</P>
+        </TD>
+        <TD WIDTH=60%>
+            <P>This package holds the classes for the "password"
+                capability.</P>
+        </TD>
+    </TR>
+    <TR VALIGN=TOP>
+        <TD WIDTH=40%>
+            <P>org.openspml.v2.msg.spmlasync</P>
+        </TD>
+        <TD WIDTH=60%>
+            <P>This package holds the classes for the "async"
+                capability.</P>
+        </TD>
+    </TR>
+    <TR VALIGN=TOP>
+        <TD WIDTH=40%>
+            <P>org.openspml.v2.msg.spmlbatch</P>
+        </TD>
+        <TD WIDTH=60%>
+            <P>This package holds the classes for the "batch"
+                capability.</P>
+        </TD>
+    </TR>
+    <TR VALIGN=TOP>
+        <TD WIDTH=40%>
+            <P>org.openspml.v2.msg.spmlbulk</P>
+        </TD>
+        <TD WIDTH=60%>
+            <P>This package holds the classes for the "bullk"
+                capability.</P>
+        </TD>
+    </TR>
+    <TR VALIGN=TOP>
+        <TD WIDTH=40%>
+            <P>org.openspml.v2.msg.spmlref</P>
+        </TD>
+        <TD WIDTH=60%>
+            <P>This package holds the classes for the "reference"
+                capability.</P>
+        </TD>
+    </TR>
+    <TR VALIGN=TOP>
+        <TD WIDTH=40%>
+            <P>org.openspml.v2.msg.spmlsearch</P>
+        </TD>
+        <TD WIDTH=60%>
+            <P>This package holds the classes for the "search"
+                capability.</P>
+        </TD>
+    </TR>
+    <TR VALIGN=TOP>
+        <TD WIDTH=40%>
+            <P>org.openspml.v2.msg.spmlsuspend</P>
+        </TD>
+        <TD WIDTH=60%>
+            <P>This package holds the classes for the "suspend"
+                capability.</P>
+        </TD>
+    </TR>
+    <TR VALIGN=TOP>
+        <TD WIDTH=40%>
+            <P>org.openspml.v2.msg.spmlupdates</P>
+        </TD>
+        <TD WIDTH=60%>
+            <P>This package holds the classes for the "updates"
+                capability.</P>
+        </TD>
+    </TR>
+</TABLE>
+
+<h4>Table of Profiles Packages</h4>
+
+<TABLE WIDTH=100% BORDER=1 CELLPADDING=4 CELLSPACING=3>
+    <COL WIDTH=103*>
+    <COL WIDTH=153*>
+    <TR VALIGN=TOP>
+        <TH WIDTH=40%>
+            <P>"Profiles" Packages</P>
+        </TH>
+        <TH WIDTH=60%>
+            <P>Description</P>
+        </TH>
+    </TR>
+    <TR VALIGN=TOP>
+        <TD WIDTH=40%>
+            <P>org.openspml.v2.profiles.spmldsml</P>
+        </TD>
+        <TD WIDTH=60%>
+            <P>This package holds classes defining the DSML Schema, as defined
+                in the DSML Profile .xsd.</P>
+        </TD>
+    </TR>
+    <TR VALIGN=TOP>
+        <TD WIDTH=40%>
+            <P>org.openspml.v2.profiles.dsml</P>
+        </TD>
+        <TD WIDTH=60%>
+            <P>This package holds classes defining the DSML 2.0 Java Bindings that
+                are used in the DSML profile; i.e. Attr, Modification, and Value.</P>
+        </TD>
+    </TR>
+    <TR VALIGN=TOP>
+        <TD WIDTH=40%>
+            <P>org.openspml.v2.profiles</P>
+        </TD>
+        <TD WIDTH=60%>
+            <P>This package is meant to hold ProfileRegistrar implementations. These
+                classes are used to configure the system (via ObjectFactory) to use the
+                desired profiles. The DSMLProfileRegistrar is the one example.</P>
+        </TD>
+    </TR>
+    <TR VALIGN=TOP>
+        <TD WIDTH=40%>
+            <P>org.openspml.v2.profiles.xmlschema</P>
+        </TD>
+        <TD WIDTH=60%>
+            <P>This package <B>will</B> hold the classes that make it easier
+                to add your own Java Binding classes into the toolkit. We want to
+                allow the use of tools like JAXB and XmlBeans with the toolkit.</P>
+        </TD>
+    </TR>
+</TABLE>
+
+<h4>Example: Registering the DSML Profile</h4>
+
+<p>This is an example of telling the system that you want to use the DSML profile.</p>
+
+<pre>
+<code>
+    import org.openspml.v2.profiles.DSMLProfileRegistrar;
+    import org.openspml.v2.util.xml.ObjectFactory;
+
+    public class MySPMLv2Requestor {
+
+    public static void main(String args[]) {
+
+    ...
+
+    // register the profile for DSML (do this even before listTargets!)
+    ObjectFactory.getInstance().register(new DSMLProfileRegistrar());
+
+    ...
+    }
+
+    }
+</code>
+</pre>
+
+<p>The implementation of the DSML classes is fairly straight-forward. In short,
+    they simply implement the <em>OpenContentElement</em> interface and are
+    then plugged into the system. Have look in the &lt;root&gt;/src/java/... tree
+    for details.</p>
+
+<p>One more note. Our Java bindings use a Reflection-based protocol to make
+    these apis easier to write by hand. Because of this, some of the field names in
+    the classes may look a little odd; but hopefully the comments in the code are
+    sufficient to explain this.</p>
+
+<div class="div1">
+    <h2><a name="Communication Classes">Communication Classes</a></h2>
+</div>
+
+<p><i>org.openspml.v2.client</i> - This package has classes that are used to
+    talk to an SPML server via SOAP. They are simple - meant mostly as examples.
+    They do not use any libraries other than the JDK.</p>
+
+<p><i>SimpleSOAPClient</i></p>
+
+<p>A class providing a simplified interface for making message-oriented SOAP
+    requests.</p>
+
+<p><i>Spml2Client</i></p>
+
+<p>A class providing a mechanism to send and receive SPML2 requests using the
+    msg.spml.Request and msg.spml.Response classes. Once the request is formatted as
+    XML, it uses the SimpleSOAPClient class to handle the actual communication. When
+    the XML response is received, it is unmarshalled into a Response and
+    returned.</p>
+
+<div class="div1">
+    <h2><a name="Utility Classes">Utility Classes</a></h2>
+</div>
+
+<p><i>org.openspml.v2.util</i> and <i>org.openspml.v2.util</i> - These two
+    packages contain classes that implement some of the toolkit interfaces, mostly
+    as examples, and might also be generally useful throughout the rest of the
+    toolkit. Rather that enumerate all of them, we refer you to the Javadoc. We do
+    describe a couple of the more important classes.</p>
+
+<p><i>org.openspml.v2.util.xml.ObjectFactory</i></p>
+
+<p>This class is a Singleton; and it is used to hook new OpenContent bindings
+    classes (in particular, implementations of Marshallable and OpenContentElement)
+    into the toolkit. It defines a couple of inner-interfaces that allow this.
+    Please see the Javadoc.</p>
+
+<p><i>org.openspml.v2.util.xml.OperationalNameValuePair</i></p>
+
+<p>We provide a class that implements the <i>OpenContentElement</i> interface (and
+    uses the MarshallableElemenent/Marshallable reflection based binding protocol)
+    and can be used by clients to pass server-specific operational attributes (perhaps
+    auth-tokens) in the SPMLv2 requests. This is <b>not</b> part of the specification,
+    but it is useful to pass information "out-of-band".</p>
+
+<p>This class is always available in the toolkit. It's always known to the
+    ObjectFactory.</p>
+
+<p><i>org.openspml.v2.util.EnumConstant</i></p>
+
+<p>This is the base class for the Enums that are defined in the .xsd files (e.g.
+    StatusRequest). This class made it easy to write Java bindings for these
+    portions of the .xsd. If you are using the XML Shema profile, you might find
+    this useful - along with the Reflection based binding protocol that we use in
+    the toolkit.</p>
+
+<div class="div1">
+    <h2><a name="Conclusion">Conclusion</a></h2>
+</div>
+
+<p>Thanks for your interest in this toolkit.</p>
+
+</div>
+<HR>
+<i>Copyright &#169; Sun Microsystems, Inc. All Rights Reserved.</i>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<osd:objectstoredef xmlns:osd='urn:org:openspml:v2:examples:nvpstore:csvdb:def'
+                    storeName='contacts' nameOfTypeNVP="objtype" nameOfUidNVP="objid">
+    <osd:objectdef classname='phoneInfo' nameOfIdNVP="contactId">
+        <osd:nvpdef name='contactId' type='T' required='true'/>
+        <osd:nvpdef name='firstName' type='T'/>
+        <osd:nvpdef name='lastName' type='T'/>
+        <osd:nvpdef name='phoneNumbers' type='MT'/>
+        <osd:nvpdef name='phoneNumberTypes' type='MT'/>
+    </osd:objectdef>
+    <osd:objectdef classname='emailInfo' nameOfIdNVP="contactId">
+        <osd:nvpdef name='contactId' type='T' required='true'/>
+        <osd:nvpdef name='emailAddresses' type='MT'/>
+        <osd:nvpdef name='emailAddressTypes' type='MT'/>
+    </osd:objectdef>
+</osd:objectstoredef>
